@@ -1,9 +1,8 @@
 import fetchData from '@/lib/fetchData';
-import { Credentials } from '@/types/LocalTypes';
-import { LoginResponse, UserResponse } from '@sharedTypes/MessageTypes';
+import {Credentials} from '@/types/LocalTypes';
+import {LoginResponse, UserResponse} from '@sharedTypes/MessageTypes';
 
 const useUser = () => {
-  // TODO: implement network functions for auth server user endpoints
   const getUserByToken = async (token: string) => {
     const options = {
       headers: {
@@ -12,23 +11,23 @@ const useUser = () => {
     };
     return await fetchData<UserResponse>(
       import.meta.env.VITE_AUTH_API + '/users/token/',
-      options,
+      options
     );
   };
 
   const getUsernameAvailable = async (username: string) => {
-    return await fetchData<{ available: boolean }>(
-      import.meta.env.VITE_AUTH_API + '/users/username/' + username,
+    return await fetchData<{available: boolean}>(
+      import.meta.env.VITE_AUTH_API + '/users/username/' + username
     );
   };
 
   const getEmailAvailable = async (email: string) => {
-    return await fetchData<{ available: boolean }>(
-      import.meta.env.VITE_AUTH_API + '/users/email/' + email,
+    return await fetchData<{available: boolean}>(
+      import.meta.env.VITE_AUTH_API + '/users/email/' + email
     );
   };
 
-  return { getUserByToken, getUsernameAvailable, getEmailAvailable };
+  return {getUserByToken, getUsernameAvailable, getEmailAvailable};
 };
 
 const use2FA = () => {
@@ -41,7 +40,10 @@ const use2FA = () => {
       body: JSON.stringify(user),
     };
 
-    // TODO: fetch and return qrCodeUrl from 2FA server /auth/setup
+    return await fetchData<{qrCodeUrl: string}>(
+      import.meta.env.VITE_2FA_API + '/auth/verify',
+      options
+    );
   };
 
   const postVerify = async (creds: Credentials) => {
@@ -53,11 +55,11 @@ const use2FA = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-      },
+      }
     );
   };
 
-  return { postUser, postVerify };
+  return {postUser, postVerify};
 };
 
-export { useUser, use2FA };
+export {useUser, use2FA};
