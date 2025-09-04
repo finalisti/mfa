@@ -41,7 +41,7 @@ const use2FA = () => {
     };
 
     return await fetchData<{qrCodeUrl: string}>(
-      import.meta.env.VITE_2FA_API + '/auth/verify',
+      import.meta.env.VITE_2FA_API + '/auth/setup',
       options
     );
   };
